@@ -1,25 +1,22 @@
 import test = require('blue-tape');
-
 import * as LineByLineReader from 'line-by-line';
 
-let reader  = new LineByLineReader('test.txt');
-let i = 0;
+test('testing reading file of 3 lines', function(t) {
+    t.plan(4);
 
-reader.on('line', (line) => {
-    i++;
-    console.log('Checking line ' + i + ' === \'line' + i + '\'');
-    if (line !== 'line'+i) {
-        throw Error('Error reading line: '+line);
-    }
-});
+    let reader  = new LineByLineReader('test.txt');
+    let i = 0;
 
-reader.on('end', () => {
-    console.log('End of file reached. Line count=' + i);
-    if (i !== 5) {
-        throw Error('Error line count: '+i);
-    }
-});
+    reader.on('line', (line) => {
+        i++;
+        t.equal(line, 'line'+i,'Error reading line #'+i);
+    });
 
-reader.on('error', (err) => {
-    throw Error('Error reading file: '+err);
+    reader.on('end', () => {
+        t.equal(i, 3, 'Line count should be 3');
+    });
+
+    reader.on('error', (err) => {
+        t.error(true, 'Error reading file: '+err);
+    });
 });
