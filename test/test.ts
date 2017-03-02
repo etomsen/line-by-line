@@ -15,7 +15,7 @@ reader.on('line', (line) => {
 
 reader.on('end', () => {
     console.log('End of file reached. Line count=' + i);
-    if (i !== 3) {
+    if (i !== 5) {
         throw Error('Error line count: '+i);
     }
 });
